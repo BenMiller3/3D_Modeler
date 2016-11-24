@@ -15,6 +15,8 @@ void keyboard(unsigned char key, int xIn, int yIn){
 	switch(key){
 		case 'q':
 			exit(0);
+		case 27:
+			exit(0);
 	}
 
 }
