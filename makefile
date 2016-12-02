@@ -1,3 +1,9 @@
+#please use 'make clean' to clean the directory of intermediate build files and the executable
+#simply typing 'make' will compile all source code files to object files .o, and then link all
+#object files into an executable
+#we are using a lot of makefile macros
+
+#changing platform dependant stuff, do not change this
 # Linux (default)
 LDFLAGS = -lGL -lGLU -lglut
 CFLAGS=-g -Wall -std=c++11
@@ -18,13 +24,20 @@ else
 	endif
 endif
 
-PROGRAM_NAME= Hello_World
+#change the 't1' name to the name you want to call your application
+PROGRAM_NAME= t1
 
+#run target to compile and build, and then launch the executable
 run: $(PROGRAM_NAME)
-		./$(PROGRAM_NAME)$(EXEEXT)
+	./$(PROGRAM_NAME)$(EXEEXT)
 
-$(PROGRAM_NAME): main.o
-		$(CC) -o $@ $^ $(CFLAGS) $(LDFLAGS)
+#when adding additional source files, such as boilerplateClass.cpp
+#or yourFile.cpp, add the filename with an object extension below
+#ie. boilerplateClass.o and yourFile.o
+#make will automatically know that the objectfile needs to be compiled
+#form a cpp source file and find it itself :)
+$(PROGRAM_NAME): main.o SceneObject.o
+	$(CC) -o $@ $^ $(CFLAGS) $(LDFLAGS)
 
 clean:
-		$(RM) *.o $(PROGRAM_NAME)$(EXEEXT)
+	$(RM) *.o $(PROGRAM_NAME)$(EXEEXT)

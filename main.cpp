@@ -6,9 +6,18 @@ By: Ben Miller and Jack Snopek
 */
 
 #include "header.h"
+#include "SceneObject.h"
 
 //Global Variables
 float camPos[] = {1, 10, 4.42f}; 
+std::vector<SceneObject> sceneObjects;
+
+void PrepareSceneObjects()
+{
+	SceneObject obj1;
+	sceneObjects.push_back(obj1);
+	sceneObjects[0].Draw();
+}
 
 void keyboard(unsigned char key, int xIn, int yIn){
 
@@ -19,6 +28,14 @@ void keyboard(unsigned char key, int xIn, int yIn){
 			exit(0);
 	}
 
+}
+
+void DrawObjects()
+{
+	for (int i = 0; i < sceneObjects.size(); i++)
+	{
+		sceneObjects.at(i).Draw();
+	}
 }
 
 void init(void){
@@ -41,19 +58,22 @@ void display(void){
 	gluLookAt(camPos[0], camPos[1], camPos[2], 0, 0, 0, 0, 1, 0);
 	glColor3f(0, 0, 0);
 
-	glTranslatef(0.0f, 0.0f, -5.0f); 
-	glutWireCube(2.0f);
+	glTranslatef(0.0f, 0.0f, 0.0f); 
+	//glutWireCube(2.0f);
+	DrawObjects();
 	
 	glFlush();	
 }
 
-int main(int argc, char** argv){
+int main(int argc, char** argv)
+{
+	PrepareSceneObjects();
 
 	glutInit(&argc, argv); 	
 	glutInitDisplayMode(GLUT_RGBA);	
 
 	glutInitWindowPosition(50,50);
-	glutInitWindowSize(640,480);
+	glutInitWindowSize(1280,720);
 
 	glutCreateWindow("Intro to 3D Objects");	
 
