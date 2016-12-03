@@ -37,6 +37,24 @@ void SceneObject::Scale(float x, float y, float z)
 	scale[1] += y;
 	scale[2] += z;
 
+	printf("%f",scale[0]);
+
+	if(scale[0] < 0.1f)
+		{
+			scale[0] = 0.1f;
+			return;
+		}
+	if(scale[1] < 0.1f)
+		{
+			scale[1] = 0.1f;
+			return;
+		}
+	if(scale[2] < 0.1f)
+		{
+			scale[2] = 0.1f;
+			return;
+		}
+
 	minBound[0] -= x;
 	minBound[1] -= y;
 	minBound[2] -= z;
@@ -44,6 +62,7 @@ void SceneObject::Scale(float x, float y, float z)
 	maxBound[0] += x;
 	maxBound[1] += y;
 	maxBound[2] += z;
+
 }
 /*
 void SceneObject::SetMaterial(float x, float y, float z, float w)
