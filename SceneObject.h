@@ -22,16 +22,16 @@
 class SceneObject
 {
 	public:
-		void SetPosition(float x, float y, float z);
-		void SetRotation(float x, float y, float z);
-		void SetScale(float x, float y, float z);
+		void Translate(float x, float y, float z);
+		void Rotate(float x, float y, float z);
+		void Scale(float x, float y, float z);
 		void SetMaterial(float x, float y, float z, float w);
 		void SetMinBound(float x, float y, float z);
 		void SetMaxBound(float x, float y, float z);
 		bool selected = false;
 		void Draw();
+		float distanceToIntersect;
 		bool Select(double posX, double posY, double posZ, double x2, double y2, double z2, double camX, double camY, double camZ);
-		//void CheckSide(posX, posY, PozZ, dirX, dirY, dirZ);
 		bool RayPLaneIntersection(double camX, double camY, double camZ, double dirX, double dirY, double dirZ, bool useMinAsPoint, char direction);
 		std::vector<float> position;
 		std::vector<float> rotation;

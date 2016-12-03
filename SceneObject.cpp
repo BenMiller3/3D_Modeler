@@ -2,26 +2,35 @@
 
 SceneObject::SceneObject()
 {
-	this->position.push_back(0.0f); position.push_back(0.0f); position.push_back(0.0f);
-	this->rotation.push_back(0.0f); rotation.push_back(0.0f); rotation.push_back(0.0f);
-	this->scale.push_back(1.0f); scale.push_back(1.0f); scale.push_back(1.0f);
-	this->minBound.push_back(-0.5f); minBound.push_back(-0.5f); minBound.push_back(-0.5f);
-	this->maxBound.push_back(0.5f); maxBound.push_back(0.5f); maxBound.push_back(0.5f);
+	position.push_back(0.0f); position.push_back(0.0f); position.push_back(0.0f);
+	rotation.push_back(0.0f); rotation.push_back(0.0f); rotation.push_back(0.0f);
+	scale.push_back(1.0f); scale.push_back(1.0f); scale.push_back(1.0f);
+	minBound.push_back(-0.5f); minBound.push_back(-0.5f); minBound.push_back(-0.5f);
+	maxBound.push_back(0.5f); maxBound.push_back(0.5f); maxBound.push_back(0.5f);
+	printf("%f", minBound[0]);
 }
 
-/*void SceneObject::SetPosition(float x, float y, float z)
+
+void SceneObject::Translate(float x, float y, float z)
 {
-	position = {x, y, z};
-}*/
+	position[0] += x;
+	position[1] += y;
+	position[2] += z;
+}
+
+void SceneObject::Rotate(float x, float y, float z)
+{
+	rotation[0] += x;
+	rotation[1] += y;
+	rotation[2] += z;
+}
+void SceneObject::Scale(float x, float y, float z)
+{
+	scale[0] += x;
+	scale[1] += y;
+	scale[2] += z;
+}
 /*
-void SceneObject::SetRotation(float x, float y, float z)
-{
-	rotation = { x, y, z};
-}
-void SceneObject::SetScale(float x, float y, float z)
-{
-	scale = { x, y, z };
-}
 void SceneObject::SetMaterial(float x, float y, float z, float w)
 {
 	material = {x, y, z, w};
@@ -79,6 +88,7 @@ bool SceneObject::RayPLaneIntersection(double camX, double camY, double camZ, do
 	float part1 = -(std::inner_product(planeNorm.begin(), planeNorm.end(), camPos.begin(), 0.0) + D);
 	float t = part1/(std::inner_product(planeNorm.begin(), planeNorm.end(), dirVec.begin(), 0.0));
 
+
 	dirVec[0] *= t;
 	dirVec[1] *= t;
 	dirVec[2] *= t;
@@ -86,6 +96,12 @@ bool SceneObject::RayPLaneIntersection(double camX, double camY, double camZ, do
 	dirVec[0] += camPos[0];
 	dirVec[1] += camPos[1];
 	dirVec[2] += camPos[2];
+
+	float distX = dirVec[0]-camPos[0];
+	float distY = dirVec[1]-camPos[1];
+	float distZ = dirVec[2]-camPos[2];
+
+	distanceToIntersect = sqrt(distX*distX + distY*distY + distZ*distZ);
 
 	if(direction == 'x')
 	{
@@ -147,7 +163,7 @@ bool SceneObject::Select(double posX, double posY, double posZ, double x2, doubl
 
 void SceneObject::Draw()  
 {
-	//glTranslatef(position[0], position[1], position[2]);
+	glTranslatef(position[0], position[1], position[2]);
 	//glMaterialfv(GL_FRONT, GL_SPECULAR, m_amb);
 	//glMaterialfv(GL_FRONT, GL_DIFFUSE, m_amb);
 	//glMaterialfv(GL_FRONT, GL_SPECULAR, m_amb);

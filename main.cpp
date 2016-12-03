@@ -14,7 +14,7 @@ float camUp[] = { 0, 1, 0 };//up vector of the camera
 float camTarget[] = { 0, 0, 0 };	//where the camera is looking at
 float lightPos[3] = {3, 3, 3};
 std::vector<SceneObject> sceneObjects;
-int selectedObject = 0;
+int selectedObject = -1;
 
 void PrepareSceneObjects()
 {
@@ -23,13 +23,88 @@ void PrepareSceneObjects()
 	
 }
 
-void keyboard(unsigned char key, int xIn, int yIn){
+void TranslateSelected(char direction, int multiplier)
+{
+	if(direction == 'x')
+	{
+		sceneObjects[selectedObject].Translate(multiplier, 0 ,0);
+	}
+	if(direction == 'y')
+	{
+		sceneObjects[selectedObject].Translate(0 , multiplier ,0);
+	}
+	if(direction == 'z')
+	{
+		sceneObjects[selectedObject].Translate(0, 0 , multiplier);
+	}
+}
 
-	switch(key){
-		case 'q':
-			exit(0);
-		case 27:
-			exit(0);
+void RotateSelected(char direction, int multiplier)
+{
+	if(direction == 'x')
+	{
+		sceneObjects[selectedObject].Rotate(multiplier, 0 ,0);
+	}
+	if(direction == 'y')
+	{
+		sceneObjects[selectedObject].Rotate(0 , multiplier ,0);
+	}
+	if(direction == 'z')
+	{
+		sceneObjects[selectedObject].Rotate(0, 0 , multiplier);
+	}
+}
+
+void ScaleSelected(char direction, int multiplier)
+{
+	if(direction == 'x')
+	{
+		sceneObjects[selectedObject].Scale(multiplier, 0 ,0);
+	}
+	if(direction == 'y')
+	{
+		sceneObjects[selectedObject].Scale(0 , multiplier ,0);
+	}
+	if(direction == 'z')
+	{
+		sceneObjects[selectedObject].Scale(0, 0 , multiplier);
+	}
+}
+
+void keyboard(unsigned char key, int xIn, int yIn)
+{
+	if(selectedObject >= 0 && selectedObject < sceneObjects.size())
+	{
+		int mod = glutGetModifiers();
+
+		switch(key){
+			case 'x':
+				if ( mod == GLUT_ACTIVE_SHIFT)
+				{
+					printf("X Translate NEG");
+					TranslateSelected('x', -1);
+				}
+				else if (mod == (GLUT_ACTIVE_ALT))
+				{
+					printf("X Rotate POS");	
+				}		
+				else if (mod == (GLUT_ACTIVE_CTRL))
+				{
+					printf("X Rotate NEG");	
+				}
+				else
+				{
+					//printf("X Translate Pos"); 	
+					TranslateSelected('x', 1);
+				}break;
+			case 'i':
+				if ( mod == GLUT_ACTIVE_SHIFT)
+					printf("X Scale NEG");
+				else 
+					printf("X Rotate POS");				
+			case 27:
+				exit(0);
+		}
 	}
 
 }
@@ -123,8 +198,12 @@ void RayCast(int mouseX, int mouseY)
 	
 	for (int i = 0; i < sceneObjects.size(); i++)
 	{
-		sceneObjects[i].selected = false;		
+		sceneObjects[i].selected = false;	
+		selectedObject = -1;	
 	}
+
+	std::vector<float> hitDistances;
+	std::vector<int> hitIndexes;
 
 	for (int i = 0; i < sceneObjects.size(); i++)
 	{
@@ -133,12 +212,14 @@ void RayCast(int mouseX, int mouseY)
 		{
 			printf("Hit\n");
 			sceneObjects[i].selected = true;
+			hitIndexes.push_back(sceneObjects[i].distanceToIntersect);
+			selectedObject = i;
+			break;
 		}
 		else
 		{
 			printf("Miss\n");
 		}
-		
 	}
 
 
@@ -197,11 +278,13 @@ void callBackInit() {
 	//glutSpecialFunc(special);
 
 	glutReshapeFunc(reshape);
-	//glutTimerFunc(0, FPS, 0);
+	glutTimerFunc(0, FPS, 0);
 }
 
 int main(int argc, char** argv)
 {
+
+
 	PrepareSceneObjects();
 
 	glutInit(&argc, argv); 	
