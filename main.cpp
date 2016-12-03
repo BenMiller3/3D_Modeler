@@ -16,14 +16,16 @@ float lightPos[3] = {3, 3, 3};
 std::vector<SceneObject> sceneObjects;
 int selectedObject = -1;
 
-void PrepareSceneObjects()
+
+void SpawnObject()
 {
+	//SceneObject* obj1 = new SceneObject;
+	//SceneObject  = new SceneObject();
 	SceneObject obj1;
 	sceneObjects.push_back(obj1);
-	
 }
 
-void TranslateSelected(char direction, int multiplier)
+void TranslateSelected(char direction, float multiplier)
 {
 	if(direction == 'x')
 	{
@@ -39,7 +41,7 @@ void TranslateSelected(char direction, int multiplier)
 	}
 }
 
-void RotateSelected(char direction, int multiplier)
+void RotateSelected(char direction, float multiplier)
 {
 	if(direction == 'x')
 	{
@@ -55,7 +57,7 @@ void RotateSelected(char direction, int multiplier)
 	}
 }
 
-void ScaleSelected(char direction, int multiplier)
+void ScaleSelected(char direction, float multiplier)
 {
 	if(direction == 'x')
 	{
@@ -73,37 +75,93 @@ void ScaleSelected(char direction, int multiplier)
 
 void keyboard(unsigned char key, int xIn, int yIn)
 {
-	if(selectedObject >= 0 && selectedObject < sceneObjects.size())
+	if(key == '1')
+		{
+			SpawnObject(); return;
+		}
+
+	else if(selectedObject >= 0 && selectedObject < sceneObjects.size())
 	{
 		int mod = glutGetModifiers();
 
-		switch(key){
-			case 'x':
-				if ( mod == GLUT_ACTIVE_SHIFT)
-				{
-					printf("X Translate NEG");
-					TranslateSelected('x', -1);
+		if (key == 'x' || key == 'X'){
+			if (mod == GLUT_ACTIVE_SHIFT){
+				TranslateSelected('x', -0.1f);
+			}
+			else{
+				TranslateSelected('x', 0.1f); 
+			}
+		}
+		else if (key == 'w' || key == 'W'){
+				if ( mod == GLUT_ACTIVE_SHIFT){
+					RotateSelected ('x', -10);
 				}
-				else if (mod == (GLUT_ACTIVE_ALT))
-				{
-					printf("X Rotate POS");	
-				}		
-				else if (mod == (GLUT_ACTIVE_CTRL))
-				{
-					printf("X Rotate NEG");	
+				else {
+					RotateSelected ('x', 10);
+				}	
+		}
+		else if (key == 'i' || key == 'I'){
+			if ( mod == GLUT_ACTIVE_SHIFT){
+					ScaleSelected ('x', -0.1f);
 				}
-				else
-				{
-					//printf("X Translate Pos"); 	
-					TranslateSelected('x', 1);
-				}break;
-			case 'i':
-				if ( mod == GLUT_ACTIVE_SHIFT)
-					printf("X Scale NEG");
-				else 
-					printf("X Rotate POS");				
-			case 27:
-				exit(0);
+				else {
+					ScaleSelected ('x', 0.1f);
+				}	
+		}
+
+		//////////////////////////YYYYYYYYYYYYYYYYYYYYYYYYYYY/////////////////////////
+
+
+		else if (key == 'y' || key == 'Y'){
+			if (mod == GLUT_ACTIVE_SHIFT){
+				TranslateSelected('y', -0.1f);
+			}
+			else{
+				TranslateSelected('y', 0.1f); 
+			}
+		}
+		else if (key == 'a' || key == 'A'){
+				if ( mod == GLUT_ACTIVE_SHIFT){
+					RotateSelected ('y', -10);
+				}
+				else {
+					RotateSelected ('y', 10);
+				}	
+		}
+		else if (key == 'j' || key == 'J'){
+			if ( mod == GLUT_ACTIVE_SHIFT){
+					ScaleSelected ('y', -0.1f);
+				}
+				else {
+					ScaleSelected ('y', 0.1f);
+				}	
+		}
+
+		///////////////////////////ZZZZZZZZZZZZZZZZZZZZZZZZZZZ////////////////////////
+
+		else if (key == 'z' || key == 'Z'){
+			if (mod == GLUT_ACTIVE_SHIFT){
+				TranslateSelected('z', -0.1f);
+			}
+			else{
+				TranslateSelected('z', 0.1f); 
+			}
+		}
+		else if (key == 's' || key == 'S'){
+				if ( mod == GLUT_ACTIVE_SHIFT){
+					RotateSelected ('z', -10);
+				}
+				else {
+					RotateSelected ('z', 10);
+				}	
+		}
+		else if (key == 'k' || key == 'K'){
+			if ( mod == GLUT_ACTIVE_SHIFT){
+					ScaleSelected ('z', -0.1f);
+				}
+				else {
+					ScaleSelected ('z', 0.1f);
+				}	
 		}
 	}
 
@@ -111,11 +169,11 @@ void keyboard(unsigned char key, int xIn, int yIn)
 
 void DrawObjects()
 {
-	
+	//printf("%i", sceneObjects.size());
 	//sceneObjects[0].Draw();
 	for (int i = 0; i < sceneObjects.size(); i++)
 	{
-		//printf("%i", i);
+		
 		sceneObjects[i].Draw();
 	}
 }
@@ -285,13 +343,13 @@ int main(int argc, char** argv)
 {
 
 
-	PrepareSceneObjects();
+	//PrepareSceneObjects();
 
 	glutInit(&argc, argv); 	
 	glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);  //1st: enable frame buffer for depth
 
 	glutInitWindowPosition(50,50);
-	glutInitWindowSize(1280,720);
+	glutInitWindowSize(800,600);
 
 	glutCreateWindow("Intro to 3D Objects");	
 	

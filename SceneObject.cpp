@@ -7,7 +7,6 @@ SceneObject::SceneObject()
 	scale.push_back(1.0f); scale.push_back(1.0f); scale.push_back(1.0f);
 	minBound.push_back(-0.5f); minBound.push_back(-0.5f); minBound.push_back(-0.5f);
 	maxBound.push_back(0.5f); maxBound.push_back(0.5f); maxBound.push_back(0.5f);
-	printf("%f", minBound[0]);
 }
 
 
@@ -16,6 +15,14 @@ void SceneObject::Translate(float x, float y, float z)
 	position[0] += x;
 	position[1] += y;
 	position[2] += z;
+
+	minBound[0] += x;
+	minBound[1] += y;
+	minBound[2] += z;
+
+	maxBound[0] += x;
+	maxBound[1] += y;
+	maxBound[2] += z;
 }
 
 void SceneObject::Rotate(float x, float y, float z)
@@ -29,6 +36,14 @@ void SceneObject::Scale(float x, float y, float z)
 	scale[0] += x;
 	scale[1] += y;
 	scale[2] += z;
+
+	minBound[0] -= x;
+	minBound[1] -= y;
+	minBound[2] -= z;
+
+	maxBound[0] += x;
+	maxBound[1] += y;
+	maxBound[2] += z;
 }
 /*
 void SceneObject::SetMaterial(float x, float y, float z, float w)
@@ -163,7 +178,12 @@ bool SceneObject::Select(double posX, double posY, double posZ, double x2, doubl
 
 void SceneObject::Draw()  
 {
-	glTranslatef(position[0], position[1], position[2]);
+	glPushMatrix();
+	glScalef(scale[0], scale[1], scale[2]);
+	glTranslatef(position[0], position[1], position[2]);	
+	glRotatef(rotation[0], 1, 0, 0);		
+	glRotatef(rotation[1], 0, 1, 0);	
+	glRotatef(rotation[2], 0, 0, 1);	
 	//glMaterialfv(GL_FRONT, GL_SPECULAR, m_amb);
 	//glMaterialfv(GL_FRONT, GL_DIFFUSE, m_amb);
 	//glMaterialfv(GL_FRONT, GL_SPECULAR, m_amb);
@@ -191,5 +211,6 @@ void SceneObject::Draw()
 		//glTranslatef(maxBound[0], maxBound[1], maxBound[2]);
 		//glutSolidCube(0.1f);
 	}
+	glPopMatrix();
 }
 
