@@ -64,19 +64,69 @@ void SceneObject::Scale(float x, float y, float z)
 	maxBound[2] += z;
 
 }
-/*
-void SceneObject::SetMaterial(float x, float y, float z, float w)
-{
-	material = {x, y, z, w};
+
+void setMaterial(int option){
+	//1= Ruby, 2 = Emerald, 3 = Pearl, 4 = Yellow Rubber, 5 = Cyan Plastic
+	
+	if(option==1){
+		float m_amb[] = {0.0215, 0.1745, 0.0215};
+		float m_dif[] = {0.07568, 0.61424, 0.07568};
+		float m_spec[] = {0.727811,0.0626,0.0626};	
+		float shiny = 0.6;
+
+		glMaterialfv(GL_FRONT, GL_AMBIENT, m_amb);
+		glMaterialfv(GL_FRONT, GL_DIFFUSE, m_dif);
+		glMaterialfv(GL_FRONT, GL_SPECULAR, m_spec);
+		glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, shiny);
+	}
+	else if(option==2){
+		float m_amb[] = {0.0215, 0.1745, 0.0215};
+		float m_dif[] = {0.07568, 0.81424, 0.07568};
+		float m_spec[] = {0.01568,0.3647,0.1098};	
+		float shiny = 0.6;
+
+		glMaterialfv(GL_FRONT, GL_AMBIENT, m_amb);
+		glMaterialfv(GL_FRONT, GL_DIFFUSE, m_dif);
+		glMaterialfv(GL_FRONT, GL_SPECULAR, m_spec);
+		glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, shiny);
+	}
+	else if(option==3){
+		float m_amb[] = {0.25, 0.20725, 0.20725};
+		float m_dif[] = {1.0, 0.829, 0.829};
+		float m_spec[] = {0.91764, 0.87843, 0.784313};
+		float shiny = 0.088;
+
+		glMaterialfv(GL_FRONT, GL_AMBIENT, m_amb);
+		glMaterialfv(GL_FRONT, GL_DIFFUSE, m_dif);
+		glMaterialfv(GL_FRONT, GL_SPECULAR, m_spec);
+		glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, shiny);
+	}
+	else if(option==4){
+		float m_amb[] = {0.05, 0.05, 0.0};
+		float m_dif[] = {0.05, 0.5, 0.4};
+		float m_spec[] = {0.7, 0.7, 0.04};
+		float shiny = 0.078125;
+
+		glMaterialfv(GL_FRONT, GL_AMBIENT, m_amb);
+		glMaterialfv(GL_FRONT, GL_DIFFUSE, m_dif);
+		glMaterialfv(GL_FRONT, GL_SPECULAR, m_spec);
+		glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, shiny);
+	}
+	else if(option==5){
+		float m_amb[] = {0.0, 0.1, 0.0};
+		float m_dif[] = {0.0, 0.50980392, 0.50980392};
+		float m_spec[] = {0.0, 0.87, 0.87};
+		float shiny = 0.25;
+
+		glMaterialfv(GL_FRONT, GL_AMBIENT, m_amb);
+		glMaterialfv(GL_FRONT, GL_DIFFUSE, m_dif);
+		glMaterialfv(GL_FRONT, GL_SPECULAR, m_spec);
+		glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, shiny);
+	}
+
+
 }
-void SceneObject::SetMinBound(float x, float y, float z)
-{
-	minBound = { x, y, z };
-}
-void SceneObject::SetMaxBound(float x, float y, float z)
-{
-	maxBound = { x, y, z };
-}*/
+
 
 bool SceneObject::RayPLaneIntersection(double camX, double camY, double camZ, double dirX, double dirY, double dirZ, bool useMinAsPoint, char direction)
 {
@@ -195,7 +245,7 @@ bool SceneObject::Select(double posX, double posY, double posZ, double x2, doubl
 	return false;
 }
 
-void SceneObject::Draw()  
+void SceneObject::Draw(int selection, int colourOption)  
 {
 	glPushMatrix();
 	glScalef(scale[0], scale[1], scale[2]);
@@ -203,16 +253,18 @@ void SceneObject::Draw()
 	glRotatef(rotation[0], 1, 0, 0);		
 	glRotatef(rotation[1], 0, 1, 0);	
 	glRotatef(rotation[2], 0, 0, 1);	
-	//glMaterialfv(GL_FRONT, GL_SPECULAR, m_amb);
-	//glMaterialfv(GL_FRONT, GL_DIFFUSE, m_amb);
-	//glMaterialfv(GL_FRONT, GL_SPECULAR, m_amb);
-	float m_amb[] = { 0.5f, 0.5f, 0.5f, 1.0f };
-	float m_dif[] = { 0.5f, 0.5f, 0.5f, 1.0f };
-	float m_spec[] = { 0.5f, 0.5f, 0.5f, 1.0f };
-	glMaterialfv(GL_FRONT, GL_AMBIENT, m_amb);
-	glMaterialfv(GL_FRONT, GL_DIFFUSE, m_dif);
-	glMaterialfv(GL_FRONT, GL_SPECULAR, m_spec);
-	glutSolidTeapot(0.4f);
+
+	// Change material
+	setMaterial(colourOption);
+
+	// OBJECT SUPPORT
+	if(selection==1) 		glutSolidTeapot(0.4f);
+	else if(selection==2) 	glutSolidCone(0.4f,0.8,50,3);
+	else if(selection==3) 	glutSolidSphere(0.5,50,50);
+	else if(selection==4) 	glutSolidCube(0.8f);
+	else if(selection==5) 	glutSolidTorus(0.4f,0.4,5,3);
+
+	//glPopMatrix();
 
 	if(selected)
 	{

@@ -8,6 +8,8 @@ By: Ben Miller and Jack Snopek
 #include "header.h"
 #include "SceneObject.h"
 
+using namespace std;
+
 //Global Variables
 float camPos[] = {1, 2, 4.42f}; 
 float camUp[] = { 0, 1, 0 };//up vector of the camera
@@ -16,74 +18,194 @@ float lightPos[3] = {3, 3, 3};
 std::vector<SceneObject> sceneObjects;
 int selectedObject = -1;
 
+int colourOption = 1;	// Materials 1-5
+std::vector<int> objectTypes;
+std::vector<int> materialTypes;
+
 
 void SpawnObject()
 {
-	//SceneObject* obj1 = new SceneObject;
-	//SceneObject  = new SceneObject();
 	SceneObject obj1;
 	sceneObjects.push_back(obj1);
 }
 
 void TranslateSelected(char direction, float multiplier)
 {
-	if(direction == 'x')
-	{
-		sceneObjects[selectedObject].Translate(multiplier, 0 ,0);
-	}
-	if(direction == 'y')
-	{
-		sceneObjects[selectedObject].Translate(0 , multiplier ,0);
-	}
-	if(direction == 'z')
-	{
-		sceneObjects[selectedObject].Translate(0, 0 , multiplier);
-	}
+	if(direction == 'x') sceneObjects[selectedObject].Translate(multiplier, 0 ,0);
+	if(direction == 'y') sceneObjects[selectedObject].Translate(0 , multiplier ,0);
+	if(direction == 'z') sceneObjects[selectedObject].Translate(0, 0 , multiplier);
 }
 
 void RotateSelected(char direction, float multiplier)
 {
-	if(direction == 'x')
-	{
-		sceneObjects[selectedObject].Rotate(multiplier, 0 ,0);
-	}
-	if(direction == 'y')
-	{
-		sceneObjects[selectedObject].Rotate(0 , multiplier ,0);
-	}
-	if(direction == 'z')
-	{
-		sceneObjects[selectedObject].Rotate(0, 0 , multiplier);
-	}
+	if(direction == 'x') sceneObjects[selectedObject].Rotate(multiplier, 0 ,0);
+	if(direction == 'y') sceneObjects[selectedObject].Rotate(0 , multiplier ,0);
+	if(direction == 'z') sceneObjects[selectedObject].Rotate(0, 0 , multiplier);
 }
 
 void ScaleSelected(char direction, float multiplier)
 {
-	if(direction == 'x')
-	{
-		sceneObjects[selectedObject].Scale(multiplier, 0 ,0);
+	if(direction == 'x') sceneObjects[selectedObject].Scale(multiplier, 0 ,0);
+	if(direction == 'y') sceneObjects[selectedObject].Scale(0 , multiplier ,0);
+	if(direction == 'z') sceneObjects[selectedObject].Scale(0, 0 , multiplier);
+}
+
+void rotateScene(int x){
+	float rotationSpeed = 10;
+
+	glLoadIdentity();
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+
+	if(x==1){
+		glTranslatef(2,2,2);
+		glRotatef(rotationSpeed,1,0,0);
+		glTranslatef(-2,-2,-2);
 	}
-	if(direction == 'y')
-	{
-		sceneObjects[selectedObject].Scale(0 , multiplier ,0);
+	else if(x==2){
+		glRotatef(rotationSpeed,0,0,1);
 	}
-	if(direction == 'z')
-	{
-		sceneObjects[selectedObject].Scale(0, 0 , multiplier);
+}
+
+void ResetScene(){
+	sceneObjects.clear();
+}
+
+void SaveScene(){
+	cout << "Please enter a name to save the file as: ";
+	string input;
+	cin >> input;
+
+	string filename = input + ".txt";
+	
+	/*
+	ofstream myfile;
+	myfile.open(filename);
+
+	for(int i = 0; i > sceneObjects.size(); i++){
+		myfile >> sceneObjects[i];
 	}
+	
+	myfile.close();
+	*/
+
+	cout << endl << "You successfully saved the file as " << filename << endl;
+}
+
+void LoadScene(){
+	cout << "Please enter the filename of the configuration you want to load: ";
+	string saveFile;
+	cin >> saveFile;
+
+	/*
+	ofstream oldFile;
+	oldFile.open(saveFile);
+
+	if(oldFile.is_open()){
+		while(getline (oldFile, line)){
+			sceneObjects.push_back(line);
+		}
+	}
+	myfile.close();
+	*/
+
+	cout << "Loading previous scene " << saveFile;
 }
 
 void keyboard(unsigned char key, int xIn, int yIn)
 {
-	if(key == '1')
+	if(key == 'r'){
+		ResetScene();
+	}
+
+	if(key == 'd'){
+		// Rotate about Y
+		rotateScene(1);
+	}
+	if(key == 'f'){
+		// Rotate about Z
+		rotateScene(2);
+	}
+	if(key == 'l'){
+		LoadScene();
+	}
+	if(key == 's'){
+		SaveScene();
+	}
+
+	// keys 1-5 = different material selections
+	if(key == '1') {
+		colourOption = 1;
+		if(selectedObject >= 0){
+			materialTypes[selectedObject] = 1;
+		}
+	}
+	if(key == '2') {
+		colourOption = 2;
+		if(selectedObject >= 0){
+			materialTypes[selectedObject] = 2;
+		}
+	}
+	if(key == '3') {
+		colourOption = 3;
+		if(selectedObject >= 0){
+			materialTypes[selectedObject] = 3;
+		}
+	}
+	if(key == '4') {
+		colourOption = 4;
+		if(selectedObject >= 0){
+			materialTypes[selectedObject] = 4;
+		}
+	}
+	if(key == '5') {
+		colourOption = 5;
+		if(selectedObject >= 0){
+			materialTypes[selectedObject] = 5;
+		}
+	}
+	
+	// key 6-9 and 0, change material
+	if(key == '6')
 		{
+			objectTypes.push_back(2);
+			materialTypes.push_back(colourOption);
 			SpawnObject(); return;
 		}
+	if(key == '7')
+		{
+			objectTypes.push_back(3);
+			materialTypes.push_back(colourOption);
+			SpawnObject(); return;
+		}
+	if(key == '8')
+		{
+			objectTypes.push_back(4);
+			materialTypes.push_back(colourOption);
+			SpawnObject(); return;
+		}
+	if(key == '9')
+		{
+			objectTypes.push_back(5);
+			materialTypes.push_back(colourOption);
+			SpawnObject(); return;
+		}
+	if(key == '0')
+		{
+			objectTypes.push_back(1);
+			materialTypes.push_back(colourOption);
+			SpawnObject(); return;
+		}
+
+	if(key == 'q'){
+		exit(0);
+	}
 
 	else if(selectedObject >= 0 && selectedObject < sceneObjects.size())
 	{
 		int mod = glutGetModifiers();
 
+		// x values
 		if (key == 'x' || key == 'X'){
 			if (mod == GLUT_ACTIVE_SHIFT){
 				TranslateSelected('x', -0.1f);
@@ -109,9 +231,7 @@ void keyboard(unsigned char key, int xIn, int yIn)
 				}	
 		}
 
-		//////////////////////////YYYYYYYYYYYYYYYYYYYYYYYYYYY/////////////////////////
-
-
+		// y values
 		else if (key == 'y' || key == 'Y'){
 			if (mod == GLUT_ACTIVE_SHIFT){
 				TranslateSelected('y', -0.1f);
@@ -137,8 +257,7 @@ void keyboard(unsigned char key, int xIn, int yIn)
 				}	
 		}
 
-		///////////////////////////ZZZZZZZZZZZZZZZZZZZZZZZZZZZ////////////////////////
-
+		// z values
 		else if (key == 'z' || key == 'Z'){
 			if (mod == GLUT_ACTIVE_SHIFT){
 				TranslateSelected('z', -0.1f);
@@ -147,7 +266,7 @@ void keyboard(unsigned char key, int xIn, int yIn)
 				TranslateSelected('z', 0.1f); 
 			}
 		}
-		else if (key == 's' || key == 'S'){
+		else if (key == 'o' || key == 'O'){
 				if ( mod == GLUT_ACTIVE_SHIFT){
 					RotateSelected ('z', -10);
 				}
@@ -169,42 +288,53 @@ void keyboard(unsigned char key, int xIn, int yIn)
 
 void DrawObjects()
 {
-	//printf("%i", sceneObjects.size());
-	//sceneObjects[0].Draw();
 	for (int i = 0; i < sceneObjects.size(); i++)
 	{
-		
-		sceneObjects[i].Draw();
+		sceneObjects[i].Draw(objectTypes[i],materialTypes[i]);
 	}
 }
 
-void EnableLighting()
-{
-	//Turn the lighting on, set up culling
-	glEnable(GL_CULL_FACE);
-	glFrontFace(GL_CCW);
-	glCullFace(GL_BACK);
-	
-	//Normalize normals
-	glEnable(GL_NORMALIZE);
+void printInstructions(){
+	cout << "\n\n\nCreated by: Ben Miller and Jack Snopek" << endl;
+	cout << "Ben Miller, 001416516" << endl;
+	cout << "Jack Snopek, 001408851\n\n" << endl;
 
-	//turn on light 
-	glEnable(GL_LIGHT0);
+	cout << "CONTROLS" << endl;
+	cout << "Click an object to select it, once selected use the keys:\n" << endl;
+	cout << "x,y,z to translate the object" << endl;
+	cout << "a,o,w to rotate the object" << endl;
+	cout << "i,j,k to scale the object" << endl;
+	cout << "The SHIFT modifier will reverse all of the above transformations" << endl;
 
-	//light colour
-	float amb[4] = {0.1f, 0.1f, 0.1f, 1};
-	float dif[4] = {0.5f, 0.5f, 0.5f, 1};
-	float spc[4] = {0.5f, 0.5f, 0.5f, 1};
-	
+	cout << "\nTo CREATE an object press the following keys to create different shapes: " << endl;
+	cout << "6 = Cone" << endl;
+	cout << "7 = Sphere" << endl;
+	cout << "8 = Cube" << endl;
+	cout << "9 = Torus" << endl;
+	cout << "0 = Teapot" << endl;
 
-	glLightfv(GL_LIGHT0, GL_POSITION, lightPos);
-	glLightfv(GL_LIGHT0, GL_DIFFUSE, dif);
-	glLightfv(GL_LIGHT0, GL_AMBIENT, amb);
-	glLightfv(GL_LIGHT0, GL_SPECULAR, spc);
+	cout << "\nTo change the MATERIAL of an object, select it and use the following keys to select a material: " << endl;
+	cout << "1 = Ruby (default)" << endl;
+	cout << "2 = Emerald" << endl;
+	cout << "3 = Pearl" << endl;
+	cout << "4 = Yellow Rubber" << endl;
+	cout << "5 = Cyan Plastic" << endl;
 
-	float pos[4] = { lightPos[0], lightPos[1], lightPos[2], 1 };
-	glLightfv(GL_LIGHT0, GL_POSITION, pos);
+	//cout << "\nTo rotate the scene about its Y axis use the keys d and D" << endl;
+	//cout << "To rotate the scene about its Z axis use the keys f and F" << endl;
+
+	cout << "\nTo DELETE an object from the scene, select it and then use the right mouse click to remove it" << endl;
+	cout << "To RESET the scene back to its defaults and remove all objects, press the r key to RESET the scene" << endl;
+
+	cout << "\nTo SAVE the current configuration to a text file press the l key and then enter the filename you wish to ";
+	cout << "save the program as." << endl;
+
+	//cout << "To LOAD a previous configuration ensure the .txt file is in the same directory as this program and then specify"
+	//cout << " the filename at the prompt to load the previous configuration. This will overwrite the current scene." << endl;
+
+	cout << "\nPress q at anytime to quit the program." << endl;
 }
+
 
 void init(void){
 
@@ -216,8 +346,6 @@ void init(void){
 	gluPerspective(45, 1, 1, 100);	
 
 	glEnable(GL_DEPTH_TEST); //2nd: enable the depth test and enable lights
-
-	EnableLighting();
 	glShadeModel(GL_SMOOTH);
 }
 
@@ -246,13 +374,6 @@ void RayCast(int mouseX, int mouseY)
 	// get point on the 'far' plane (third param is set to 1.0)
 	gluUnProject(winX, winY, 1.0, matModelView, matProjection, 
 			viewport, &m_end[0], &m_end[1], &m_end[2]); 
-
-	
-	//CREATE SORTED LIST FOR SELECTIONS HERE
-	////////////////////////////////////////
-	/////////////////////////////////////////
-	//////////////////////////////////////////
-
 	
 	for (int i = 0; i < sceneObjects.size(); i++)
 	{
@@ -268,20 +389,33 @@ void RayCast(int mouseX, int mouseY)
 		//printf("%i", i);
 		if(sceneObjects[i].Select(m_start[0], m_start[1], m_start[2], m_end[0], m_end[1], m_end[2], camPos[0], camPos[1], camPos[2]))
 		{
-			printf("Hit\n");
-			sceneObjects[i].selected = true;
-			hitIndexes.push_back(sceneObjects[i].distanceToIntersect);
-			selectedObject = i;
-			break;
+			//printf("Hit\n");
+			hitDistances.push_back(sceneObjects[i].distanceToIntersect);
+			hitIndexes.push_back(i);			
 		}
 		else
 		{
-			printf("Miss\n");
+			//printf("Miss\n");
 		}
 	}
 
+	float biggestDistSoFar = 9999999;
+	int indexNow = -1;
+	for (int i = 0; i < hitDistances.size(); i++)
+	{
+		if(hitDistances[i] < biggestDistSoFar)
+		{
+			//printf("Big Dist Now Is %f\n", hitDistances[i] );
+			biggestDistSoFar = hitDistances[i];
+			indexNow = hitIndexes[i]; 
+		}
+	}
 
-	// now you can create a ray from m_start to m_end
+	if(indexNow >= 0)
+	{
+		sceneObjects[indexNow].selected = true;
+		selectedObject = indexNow;
+	}
 }
 
 void mouse(int btn, int state, int mouseX, int mouseY)
@@ -289,7 +423,35 @@ void mouse(int btn, int state, int mouseX, int mouseY)
 	if(btn == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
 		{
 				RayCast(mouseX, mouseY);
+		}
+
+	// On right click, delete objects from scene	
+	if(btn == GLUT_RIGHT_BUTTON && state == GLUT_DOWN && selectedObject >= 0 && selectedObject < sceneObjects.size())
+		{
+				TranslateSelected('x', 99999);
 		}	
+}
+
+void DrawGroundPlane(){
+	// Ground 
+	glColor3f(0.68823529,0.621568627,0.54313725);
+	glPushMatrix();
+		glTranslatef(0,-2,1);
+		glScalef(1,0.1,1);
+		glutSolidCube(10);
+		glColor3f(0,0,0);
+		glutWireCube(10);
+	glPopMatrix();
+
+	// Back wall
+	glColor3f(0.68823529,0.621568627,0.54313725);
+	glPushMatrix();
+		glTranslatef(0,0,-5);
+		glScalef(1,0.7,0.1);
+		glutSolidCube(8);
+		glColor3f(0,0,0);
+		glutWireCube(8);
+	glPopMatrix();
 }
 
 void display(void){
@@ -304,8 +466,28 @@ void display(void){
 			  camUp[0], camUp[1], camUp[2]);
 	glColor3f(0, 0, 0);
 
-	//glTranslatef(0.0f, 0.0f, 0.0f); 
+	// Lighting
+     glPushMatrix();
+         glEnable(GL_COLOR_MATERIAL);
+         glColorMaterial ( GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE );
+        
+        float pos1[] = {1,1,1,0};
+        float amb1[4] = {1,1,1,1};
+        float diff1[4] = {0.5, 0.5, 0.5, 1};
+        float spec1[4] = {1, 1, 1, 1};
+
+        glEnable(GL_LIGHTING);
+        glEnable(GL_LIGHT0);
+        glShadeModel(GL_SMOOTH);
+
+        glLightfv(GL_LIGHT0, GL_POSITION, pos1);
+ 	 	glLightfv(GL_LIGHT0, GL_AMBIENT, amb1);
+        glLightfv(GL_LIGHT0, GL_DIFFUSE, diff1);
+        glLightfv(GL_LIGHT0, GL_SPECULAR, spec1);
+    glPopMatrix();
+
 	DrawObjects();
+	DrawGroundPlane();
 	
 	glutSwapBuffers();	
 }
@@ -329,35 +511,33 @@ void reshape(int w, int h)
 }
 
 void callBackInit() {
+
 	//Set up
 	glutDisplayFunc(display);	
 	glutKeyboardFunc(keyboard);
 	glutMouseFunc(mouse);
-	//glutSpecialFunc(special);
 
 	glutReshapeFunc(reshape);
 	glutTimerFunc(0, FPS, 0);
 }
 
+
 int main(int argc, char** argv)
 {
-
-
-	//PrepareSceneObjects();
-
 	glutInit(&argc, argv); 	
-	glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);  //1st: enable frame buffer for depth
+	glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);  
 
 	glutInitWindowPosition(50,50);
 	glutInitWindowSize(800,600);
 
-	glutCreateWindow("Intro to 3D Objects");	
+	glutCreateWindow("3GC3 - Assigment 3 (3D Modeler)");	
 	
+	printInstructions();
 
 	callBackInit();
 	init();
 
-	glutMainLoop();	// Enters the GLUT event processing loop
+	glutMainLoop();	
 
 	return(0);
 }

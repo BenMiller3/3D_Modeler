@@ -13,3 +13,7 @@
 #include <math.h>
 #include <iostream>
 #include <vector>
+#include <numeric>
+#include <iterator>
+#include <fstream>
+#include <cstdio>
