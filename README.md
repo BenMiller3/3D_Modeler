@@ -44,6 +44,13 @@ To change the objects material, select it and press the following keys for the f
 
 To delete an object from the scene, select it with the mouse and then right click the object to delete it.
 
+To ROTATE the entire scene use the following keys:
+
+	d = rotate about y axis
+	f = rotate about z axis
+
+Use the SHIFT modifier plus d or f to rotate in the opposite direction
+
 To RESET the scene use the 'r' key. This will restore the scene to its original values and remove all objects created in the scene.
 
 Press q at anytime to quit the program.

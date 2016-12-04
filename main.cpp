@@ -53,23 +53,6 @@ void ScaleSelected(char direction, float multiplier)
 	if(direction == 'z') sceneObjects[selectedObject].Scale(0, 0 , multiplier);
 }
 
-void rotateScene(int x){
-	float rotationSpeed = 10;
-
-	glLoadIdentity();
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
-
-	if(x==1){
-		glTranslatef(2,2,2);
-		glRotatef(rotationSpeed,1,0,0);
-		glTranslatef(-2,-2,-2);
-	}
-	else if(x==2){
-		glRotatef(rotationSpeed,0,0,1);
-	}
-}
-
 void ResetScene(){
 	sceneObjects.clear();
 }
