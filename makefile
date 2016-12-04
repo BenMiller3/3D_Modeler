@@ -18,7 +18,7 @@ else
 	endif
 endif
 
-PROGRAM_NAME= 3GC3_Assignment_3
+PROGRAM_NAME= Modeller.x
 
 #run target to compile and build, and then launch the executable
 run: $(PROGRAM_NAME)

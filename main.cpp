@@ -55,6 +55,8 @@ void ScaleSelected(char direction, float multiplier)
 
 void ResetScene(){
 	sceneObjects.clear();
+	angle = 0;
+	angle2 = 0;
 }
 
 void SaveScene(){
