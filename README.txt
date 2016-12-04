@@ -54,3 +54,12 @@ Use the SHIFT modifier plus d or f to rotate in the opposite direction
 To RESET the scene use the 'r' key. This will restore the scene to its original values and remove all objects created in the scene.
 
 Press q at anytime to quit the program.
+
+** BONUS FEATURE **
+
+Use the Arrow Keys LEFT and RIGHT to zoom in and out of the X camera values
+Use the Arrow Keys UP and DOWN to zoom in and out of the Y camera values
+Use the n key to zoom out of the Z camera values and use SHIFT to reverse
+***
+
+-- Currently the rotate scene messes with the ray picking values so the values sometimes don't work. Press r to restart the scene and this fixes it.

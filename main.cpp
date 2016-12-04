@@ -14,8 +14,9 @@ using namespace std;
 // Move Camera
 float cameraX = 1;
 float cameraY = 2;
+float cameraZ = 4.42f;
 
-float camPos[] = {cameraX, cameraY, 4.42f}; 
+float camPos[] = {cameraX, cameraY, cameraZ}; 
 float camUp[] = { 0, 1, 0 };//up vector of the camera
 float camTarget[] = { 0, 0, 0 };	//where the camera is looking at
 float lightPos[3] = {3, 3, 3};
@@ -62,6 +63,9 @@ void ResetScene(){
 	sceneObjects.clear();
 	angle = 0;
 	angle2 = 0;
+	cameraX = 1;
+	cameraY = 2;
+	cameraZ = 4.42f;
 }
 
 void SaveScene(){
@@ -114,14 +118,12 @@ void special(int key, int x, int y){
 		case GLUT_KEY_RIGHT:
 			cameraX -= 1;
 			break;
-		/*
 		case GLUT_KEY_UP:
 			cameraY += 1;
 			break;
 		case GLUT_KEY_DOWN:
 			cameraY -= 1;
 			break;
-			*/
 	}
 	
 	glutPostRedisplay();
@@ -151,6 +153,14 @@ void keyboard(unsigned char key, int xIn, int yIn)
 	}
 	if(key == 's'){
 		//SaveScene();
+	}
+
+	// keys n and N used to zoom in and out of Z camera pos
+	if(key == 'n'){
+		cameraZ+=1;
+	}
+	if(key == 'N'){
+		cameraZ -=1;
 	}
 
 	// keys 1-5 = different material selections
@@ -545,8 +555,9 @@ void display(void){
     glRotatef(angle2,0,0,1);
 
     // Move Camera
-    camPos[0] += cameraX;
-    camPos[1] += cameraY;
+    camPos[0] = cameraX;
+    camPos[1] = cameraY;
+    camPos[2] = cameraZ;
 
 	DrawObjects();
 	DrawGroundPlane();
@@ -580,7 +591,7 @@ void callBackInit() {
 	glutDisplayFunc(display);	
 	glutKeyboardFunc(keyboard);
 	glutMouseFunc(mouse);
-	glutSpecialFunc(special)
+	glutSpecialFunc(special);
 
 	glutReshapeFunc(reshape);
 	glutTimerFunc(0, FPS, 0);
