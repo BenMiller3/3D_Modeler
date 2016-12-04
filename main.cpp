@@ -435,9 +435,11 @@ void mouse(int btn, int state, int mouseX, int mouseY)
 void DrawGroundPlane(){
 
 	glPushMatrix();
+
+	glPushMatrix();
 	float m_amb[] = {0.0215, 0.1745, 0.0215};
 	float m_dif[] = {0.07568, 0.61424, 0.07568};
-	float m_spec[] = {0.9607843, 0.870588, 0.70196};	
+	float m_spec[] = {0.2, 0.2, 0.2};	
 	float shiny = 0.6;
 
 	glMaterialfv(GL_FRONT, GL_AMBIENT, m_amb);
@@ -449,7 +451,7 @@ void DrawGroundPlane(){
 
 	// Ground 
 	glPushMatrix();
-		glColor3f(1,1,1);
+		glColor3f(0.5,0.5,0.5);
 		glTranslatef(0,-2,1);
 		glScalef(1.1,0.1,1);;
 		glutSolidCube(10);
@@ -481,6 +483,8 @@ void DrawGroundPlane(){
 		glutSolidCube(8);
 		glColor3f(0,0,0);
 		glutWireCube(8);
+	glPopMatrix();
+
 	glPopMatrix();
 }
 
