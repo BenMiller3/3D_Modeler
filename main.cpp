@@ -438,6 +438,7 @@ void DrawGroundPlane(){
 
 	// Ground 
 	glPushMatrix();
+		glColor3f(1,1,1);
 		glTranslatef(0,-2,1);
 		glScalef(1.1,0.1,1);;
 		glutSolidCube(10);
@@ -447,6 +448,7 @@ void DrawGroundPlane(){
 
 	// Left wall
 	glPushMatrix();
+		glColor3f(1,1,1);
 		glRotatef(-22.5,0,1,0);
 		glTranslatef(2,0,-5);
 		glScalef(1,0.7,0.1);
@@ -457,6 +459,7 @@ void DrawGroundPlane(){
 
 	// Right wall
 	glPushMatrix();
+		glColor3f(1,1,1);
 		glRotatef(22.5,0,1,0);
 		glTranslatef(-2,0,-5);
 		glScalef(1.2,0.7,0.1);
