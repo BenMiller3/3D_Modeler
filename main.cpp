@@ -11,7 +11,11 @@ By: Ben Miller and Jack Snopek
 using namespace std;
 
 //Global Variables
-float camPos[] = {1, 2, 4.42f}; 
+// Move Camera
+float cameraX = 1;
+float cameraY = 2;
+
+float camPos[] = {cameraX, cameraY, 4.42f}; 
 float camUp[] = { 0, 1, 0 };//up vector of the camera
 float camTarget[] = { 0, 0, 0 };	//where the camera is looking at
 float lightPos[3] = {3, 3, 3};
@@ -22,6 +26,7 @@ int colourOption = 1;	// Materials 1-5
 std::vector<int> objectTypes;
 std::vector<int> materialTypes;
 
+// Scene rotation
 float angle = 0;
 float angle2 = 0;
 
@@ -99,6 +104,29 @@ void LoadScene(){
 
 	cout << "Loading previous scene " << saveFile;
 }
+
+void special(int key, int x, int y){
+
+	switch(key){
+		case GLUT_KEY_LEFT:
+			cameraX += 1;
+			break;
+		case GLUT_KEY_RIGHT:
+			cameraX -= 1;
+			break;
+		/*
+		case GLUT_KEY_UP:
+			cameraY += 1;
+			break;
+		case GLUT_KEY_DOWN:
+			cameraY -= 1;
+			break;
+			*/
+	}
+	
+	glutPostRedisplay();
+}
+
 
 void keyboard(unsigned char key, int xIn, int yIn)
 {
@@ -512,8 +540,13 @@ void display(void){
         glLightfv(GL_LIGHT0, GL_SPECULAR, spec1);
     glPopMatrix();
 
+    // Rotate Scene
     glRotatef(angle,0,1,0);
     glRotatef(angle2,0,0,1);
+
+    // Move Camera
+    camPos[0] += cameraX;
+    camPos[1] += cameraY;
 
 	DrawObjects();
 	DrawGroundPlane();
@@ -547,6 +580,7 @@ void callBackInit() {
 	glutDisplayFunc(display);	
 	glutKeyboardFunc(keyboard);
 	glutMouseFunc(mouse);
+	glutSpecialFunc(special)
 
 	glutReshapeFunc(reshape);
 	glutTimerFunc(0, FPS, 0);
