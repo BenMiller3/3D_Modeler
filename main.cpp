@@ -22,6 +22,9 @@ int colourOption = 1;	// Materials 1-5
 std::vector<int> objectTypes;
 std::vector<int> materialTypes;
 
+float angle = 0;
+float angle2 = 0;
+
 
 void SpawnObject()
 {
@@ -119,12 +122,16 @@ void keyboard(unsigned char key, int xIn, int yIn)
 	}
 
 	if(key == 'd'){
-		// Rotate about Y
-		rotateScene(1);
+		angle+= 1;
+	}
+	if(key == 'D'){
+		angle -= 1;
 	}
 	if(key == 'f'){
-		// Rotate about Z
-		rotateScene(2);
+		angle2 += 1;
+	}
+	if(key == 'F'){
+		angle2 -= 1;
 	}
 	if(key == 'l'){
 		//LoadScene();
@@ -320,8 +327,8 @@ void printInstructions(){
 	cout << "4 = Yellow Rubber" << endl;
 	cout << "5 = Cyan Plastic" << endl;
 
-	//cout << "\nTo rotate the scene about its Y axis use the keys d and D" << endl;
-	//cout << "To rotate the scene about its Z axis use the keys f and F" << endl;
+	cout << "\nTo rotate the scene about its Y axis use the keys d and D" << endl;
+	cout << "To rotate the scene about its Z axis use the keys f and F" << endl;
 
 	cout << "\nTo DELETE an object from the scene, select it and then use the right mouse click to remove it" << endl;
 	cout << "To RESET the scene back to its defaults and remove all objects, press the r key to RESET the scene" << endl;
@@ -520,8 +527,13 @@ void display(void){
         glLightfv(GL_LIGHT0, GL_SPECULAR, spec1);
     glPopMatrix();
 
+    glRotatef(angle,0,1,0);
+    glRotatef(angle2,0,0,1);
+
 	DrawObjects();
 	DrawGroundPlane();
+
+
 	
 	glutSwapBuffers();	
 }
