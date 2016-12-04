@@ -127,10 +127,10 @@ void keyboard(unsigned char key, int xIn, int yIn)
 		rotateScene(2);
 	}
 	if(key == 'l'){
-		LoadScene();
+		//LoadScene();
 	}
 	if(key == 's'){
-		SaveScene();
+		//SaveScene();
 	}
 
 	// keys 1-5 = different material selections
@@ -433,21 +433,33 @@ void mouse(int btn, int state, int mouseX, int mouseY)
 }
 
 void DrawGroundPlane(){
+
+	glColor3f(1.0f, 1.0f, 1.0f);
+
 	// Ground 
-	glColor3f(0.68823529,0.621568627,0.54313725);
 	glPushMatrix();
 		glTranslatef(0,-2,1);
-		glScalef(1,0.1,1);
+		glScalef(1.1,0.1,1);;
 		glutSolidCube(10);
 		glColor3f(0,0,0);
 		glutWireCube(10);
 	glPopMatrix();
 
-	// Back wall
-	glColor3f(0.68823529,0.621568627,0.54313725);
+	// Left wall
 	glPushMatrix();
-		glTranslatef(0,0,-5);
+		glRotatef(-22.5,0,1,0);
+		glTranslatef(2,0,-5);
 		glScalef(1,0.7,0.1);
+		glutSolidCube(8);
+		glColor3f(0,0,0);
+		glutWireCube(8);
+	glPopMatrix();
+
+	// Right wall
+	glPushMatrix();
+		glRotatef(22.5,0,1,0);
+		glTranslatef(-2,0,-5);
+		glScalef(1.2,0.7,0.1);
 		glutSolidCube(8);
 		glColor3f(0,0,0);
 		glutWireCube(8);
