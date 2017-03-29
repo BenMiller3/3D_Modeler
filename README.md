@@ -55,8 +55,6 @@ To RESET the scene use the 'r' key. This will restore the scene to its original 
 
 Press q at anytime to quit the program.
 
-** BONUS FEATURE **
-
 Use the Arrow Keys LEFT and RIGHT to zoom in and out of the X camera values
 Use the Arrow Keys UP and DOWN to zoom in and out of the Y camera values
 Use the n key to zoom out of the Z camera values and use SHIFT to reverse
