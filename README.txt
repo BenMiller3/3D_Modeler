@@ -1,4 +1,4 @@
-# 3GC3 Assignment 3
+# 3D Modeler
 
 By: Benjamin Miller and Jack Snopek
 
